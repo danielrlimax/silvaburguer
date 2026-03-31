@@ -2,13 +2,49 @@ const whatsappNumber = "5515998850796";
 let cart = [];
 
 // ==========================================
+// LÓGICA DE ARMAZENAMENTO (LOCALSTORAGE)
+// ==========================================
+// NOVO: Tempo de expiração em milissegundos (1 hora = 3600000 ms)
+const CART_EXPIRATION_MS = 60 * 60 * 1000; 
+
+// NOVO: Função para salvar o carrinho atual no navegador
+function saveCart() {
+    const cartData = {
+        items: cart,
+        timestamp: new Date().getTime()
+    };
+    localStorage.setItem('silvaBurguerCart', JSON.stringify(cartData));
+}
+
+// NOVO: Função para carregar o carrinho quando a página abrir
+function loadCart() {
+    const savedCartData = localStorage.getItem('silvaBurguerCart');
+    if (savedCartData) {
+        const parsedData = JSON.parse(savedCartData);
+        const currentTime = new Date().getTime();
+        
+        // Verifica se a diferença de tempo é menor que 1 hora
+        if (currentTime - parsedData.timestamp < CART_EXPIRATION_MS) {
+            cart = parsedData.items;
+            updateCartUI(); // Atualiza os contadores na tela
+        } else {
+            // Se passou de 1 hora, limpa o lixo antigo
+            localStorage.removeItem('silvaBurguerCart');
+        }
+    }
+}
+
+// NOVO: Executa o carregamento assim que o script é lido
+loadCart();
+
+
+// ==========================================
 // FILTRO DE CATEGORIAS (Corrigido para ficar amarelo)
 // ==========================================
 function filterMenu(category) {
     const buttons = document.querySelectorAll('.cat-btn');
     buttons.forEach(btn => {
         btn.classList.remove('active');
-        // Agora ele verifica se a ação do botão contém a categoria exata clicada
         if(btn.getAttribute('onclick').includes(`'${category}'`)) {
             btn.classList.add('active');
         }
@@ -43,14 +79,11 @@ let currentBurger = null;
 function openAddonModal(name, price) {
     currentBurger = { name: name, basePrice: price, currentPrice: price };
     
-    // Desmarca todos os checkboxes sempre que abrir a janela
     document.querySelectorAll('.addon-checkbox').forEach(cb => cb.checked = false);
     
-    // Atualiza os textos da tela
     document.getElementById('modal-burger-name').innerText = name;
     updateModalPrice();
     
-    // Mostra o modal de adicionais
     document.getElementById('addon-modal').style.display = 'flex';
 }
 
@@ -77,7 +110,6 @@ function confirmBurgerWithAddons() {
         });
     });
 
-    // Cria uma chave única para agrupar lanches perfeitamente iguais no carrinho
     const addonsString = selectedAddons.map(a => a.name).sort().join('|');
     const itemKey = `${currentBurger.name}-${addonsString}`;
 
@@ -95,6 +127,7 @@ function confirmBurgerWithAddons() {
         });
     }
 
+    saveCart(); // NOVO: Salva no localStorage após adicionar lanche com adicional
     updateCartUI();
     closeAddonModal();
     alert(currentBurger.name + " adicionado ao carrinho!");
@@ -113,9 +146,9 @@ function addToCart(name, price) {
         cart.push({ key: itemKey, name, price, quantity: 1, addons: [] });
     }
     
+    saveCart(); // NOVO: Salva no localStorage após adicionar bebida/porção
     updateCartUI();
     
-    // Feedback visual momentâneo no botão
     const btn = event.currentTarget;
     const originalHTML = btn.innerHTML;
     const originalBg = btn.style.background;
@@ -183,7 +216,6 @@ function sendWhatsApp() {
         const itemTotal = item.price * item.quantity;
         message += `• ${item.quantity}x - ${item.name} - R$ ${itemTotal.toFixed(2).replace('.', ',')}\n`;
         
-        // CORREÇÃO: Formatação dos adicionais com espaçamento e itálico limpo
         if (item.addons && item.addons.length > 0) {
             const addonNames = item.addons.map(a => a.name).join(', ');
             message += `    + _${addonNames}_\n`;
@@ -204,6 +236,12 @@ function sendWhatsApp() {
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
+    // Abre o WhatsApp
     window.open(whatsappUrl, '_blank');
     closeModal();
+
+    // NOVO: Reseta o carrinho após enviar o pedido!
+    cart = [];
+    localStorage.removeItem('silvaBurguerCart');
+    updateCartUI();
 }
