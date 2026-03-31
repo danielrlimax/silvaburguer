@@ -1,7 +1,9 @@
 const whatsappNumber = "5519997103303"; 
 let cart = [];
 
-// 1. Filtro de Categorias
+// ==========================================
+// FILTRO DE CATEGORIAS
+// ==========================================
 function filterMenu(category) {
     const buttons = document.querySelectorAll('.cat-btn');
     buttons.forEach(btn => {
@@ -32,11 +34,87 @@ function filterMenu(category) {
     });
 }
 
-// 2. Adicionar ao Carrinho
+// ==========================================
+// LÓGICA DE ADICIONAIS DO LANCHE
+// ==========================================
+let currentBurger = null;
+
+function openAddonModal(name, price) {
+    currentBurger = { name: name, basePrice: price, currentPrice: price };
+    
+    // Desmarca todos os checkboxes sempre que abrir a janela
+    document.querySelectorAll('.addon-checkbox').forEach(cb => cb.checked = false);
+    
+    // Atualiza os textos da tela
+    document.getElementById('modal-burger-name').innerText = name;
+    updateModalPrice();
+    
+    // Mostra o modal de adicionais
+    document.getElementById('addon-modal').style.display = 'flex';
+}
+
+function closeAddonModal() {
+    document.getElementById('addon-modal').style.display = 'none';
+    currentBurger = null;
+}
+
+function updateModalPrice() {
+    let total = currentBurger.basePrice;
+    document.querySelectorAll('.addon-checkbox:checked').forEach(cb => {
+        total += parseFloat(cb.value);
+    });
+    currentBurger.currentPrice = total;
+    document.getElementById('modal-total-price').innerText = total.toFixed(2).replace('.', ',');
+}
+
+function confirmBurgerWithAddons() {
+    let selectedAddons = [];
+    document.querySelectorAll('.addon-checkbox:checked').forEach(cb => {
+        selectedAddons.push({
+            name: cb.getAttribute('data-name'),
+            price: parseFloat(cb.value)
+        });
+    });
+
+    // Cria uma chave única para agrupar lanches perfeitamente iguais no carrinho
+    const addonsString = selectedAddons.map(a => a.name).sort().join('|');
+    const itemKey = `${currentBurger.name}-${addonsString}`;
+
+    const existingItem = cart.find(item => item.key === itemKey);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            key: itemKey,
+            name: currentBurger.name,
+            price: currentBurger.currentPrice, 
+            quantity: 1,
+            addons: selectedAddons
+        });
+    }
+
+    updateCartUI();
+    closeAddonModal();
+    alert(currentBurger.name + " adicionado ao carrinho!");
+}
+
+// ==========================================
+// CARRINHO (PARA BEBIDAS E PORÇÕES)
+// ==========================================
 function addToCart(name, price) {
-    cart.push({ name, price });
+    const itemKey = name;
+    const existingItem = cart.find(item => item.key === itemKey);
+    
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({ key: itemKey, name, price, quantity: 1, addons: [] });
+    }
+    
     updateCartUI();
     
+    // Feedback visual momentâneo no botão
     const btn = event.currentTarget;
     const originalHTML = btn.innerHTML;
     const originalBg = btn.style.background;
@@ -53,17 +131,17 @@ function addToCart(name, price) {
     }, 800);
 }
 
-// 3. Atualizar Interface do Carrinho
 function updateCartUI() {
-    const total = cart.reduce((acc, item) => acc + item.price, 0);
+    const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+    const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+
     document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-    document.getElementById('cart-count').innerText = `${cart.length} item(ns)`;
+    document.getElementById('cart-count').innerText = `${totalItems} item(ns)`;
 }
 
 // ==========================================
-// FUNÇÕES DA TELINHA DE CHECKOUT (NOVO)
+// MODAL DE CHECKOUT & WHATSAPP
 // ==========================================
-
 function openModal() {
     if (cart.length === 0) {
         alert("Seu carrinho está vazio! Adicione uma delícia antes de pedir.");
@@ -80,7 +158,6 @@ function toggleTroco() {
     const paymentMethod = document.getElementById('payment-method').value;
     const trocoContainer = document.getElementById('troco-container');
     
-    // Mostra o campo de troco apenas se for Dinheiro
     if (paymentMethod === 'Dinheiro') {
         trocoContainer.style.display = 'block';
     } else {
@@ -94,7 +171,7 @@ function sendWhatsApp() {
     const troco = document.getElementById('troco').value;
 
     if (address.trim() === '') {
-        alert("Por favor, digite o seu endereço para entrega.");
+        alert("Por favor, digite a sua morada (endereço) para entrega.");
         return;
     }
 
@@ -102,10 +179,17 @@ function sendWhatsApp() {
     message += `---------------------------------\n`;
 
     cart.forEach((item) => {
-        message += `• ${item.name} - R$ ${item.price.toFixed(2).replace('.', ',')}\n`;
+        const itemTotal = item.price * item.quantity;
+        message += `• ${item.quantity}x - ${item.name} - R$ ${itemTotal.toFixed(2).replace('.', ',')}\n`;
+        
+        // Adiciona a lista de ingredientes extra logo abaixo do lanche
+        if (item.addons && item.addons.length > 0) {
+            const addonNames = item.addons.map(a => a.name).join(', ');
+            message += `   _+ ${addonNames}_\n`;
+        }
     });
 
-    const total = cart.reduce((acc, item) => acc + item.price, 0);
+    const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
     message += `---------------------------------\n`;
     message += `💰 *TOTAL DO PEDIDO: R$ ${total.toFixed(2).replace('.', ',')}*\n\n`;
     
@@ -120,5 +204,5 @@ function sendWhatsApp() {
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
     window.open(whatsappUrl, '_blank');
-    closeModal(); // Fecha a telinha depois de enviar
+    closeModal();
 }

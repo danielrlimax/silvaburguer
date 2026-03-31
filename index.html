@@ -23,14 +23,13 @@
         <div class="logo">
             SILVA <span class="yellow">BURGUER</span>
         </div>
-        <p class="tagline">Hamburgueria • Desde 2024</p>
+        <p class="tagline">Hamburgueria • Desde 2026</p>
     </header>
 
     <nav class="categories">
         <button class="cat-btn active" onclick="filterMenu('todos')">Todos</button>
         <button class="cat-btn" onclick="filterMenu('burgers')">Lanches</button>
         <button class="cat-btn" onclick="filterMenu('porcoes')">Porções</button>
-        <button class="cat-btn" onclick="filterMenu('adicionais')">Adicionais</button>
         <button class="cat-btn" onclick="filterMenu('bebidas')">Bebidas</button>
     </nav>
 
@@ -49,8 +48,8 @@
                 <h3>Burguer Catu</h3>
                 <p>Pão brioche, hambúrguer artesanal 150g, queijo prato, tomate, orégano, catchup.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Catu (Só o Lanche)', 32.00)">R$ 32,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Catu (COM FRITAS)', 37.00)">R$ 37,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Catu (Só o Lanche)', 32.00)">R$ 32,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Catu (COM FRITAS)', 37.00)">R$ 37,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -61,8 +60,8 @@
                 <h3>Burguer Perfeito</h3>
                 <p>Pão brioche, hambúrguer artesanal 150g, queijo cheddar, picles, anel cebola empanado, molho barbecue.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Perfeito (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Perfeito (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Perfeito (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Perfeito (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -73,8 +72,8 @@
                 <h3>Burguer Picanha</h3>
                 <p>Pão brioche, hambúrguer de picanha 150g, queijo prato, picles, alface, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Picanha (Só o Lanche)', 35.00)">R$ 35,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Picanha (COM FRITAS)', 40.00)">R$ 40,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Picanha (Só o Lanche)', 35.00)">R$ 35,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Picanha (COM FRITAS)', 40.00)">R$ 40,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -85,8 +84,8 @@
                 <h3>Burguer Simples</h3>
                 <p>Pão brioche, hambúrguer artesanal 100g, queijo cheddar, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Simples (Só o Lanche)', 22.00)">R$ 22,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Simples (COM FRITAS)', 27.00)">R$ 27,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Simples (Só o Lanche)', 22.00)">R$ 22,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Simples (COM FRITAS)', 27.00)">R$ 27,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -97,8 +96,8 @@
                 <h3>Burguer Salada</h3>
                 <p>Pão com gergelim, hambúrguer artesanal 150g, queijo cheddar, alface, tomate, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Salada (Só o Lanche)', 29.00)">R$ 29,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Salada (COM FRITAS)', 34.00)">R$ 34,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Salada (Só o Lanche)', 29.00)">R$ 29,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Salada (COM FRITAS)', 34.00)">R$ 34,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -109,8 +108,8 @@
                 <h3>Burguer Duplo Especial</h3>
                 <p>Pão brioche, 2 hambúrguer artesanal 100g, queijo cheddar, alface, cebola, molho especial.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Duplo Especial (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Duplo Especial (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Duplo Especial (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Duplo Especial (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -121,8 +120,8 @@
                 <h3>Burguer Bacon</h3>
                 <p>Pão brioche, hambúrguer artesanal 150g, queijo cheddar, bacon fatia, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Bacon (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Bacon (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Bacon (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Bacon (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -133,8 +132,8 @@
                 <h3>Burguer Caramelizado</h3>
                 <p>Pão brioche, hambúrguer artesanal 150g, queijo cheddar, cebola caramelizada, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Caramelizado (Só o Lanche)', 28.00)">R$ 28,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Caramelizado (COM FRITAS)', 33.00)">R$ 33,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Caramelizado (Só o Lanche)', 28.00)">R$ 28,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Caramelizado (COM FRITAS)', 33.00)">R$ 33,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -145,8 +144,8 @@
                 <h3>Burguer Frango</h3>
                 <p>Pão brioche com gergelim, 1 hambúrguer artesanal frango 150g, queijo prato, alface, repolho, molho especial.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Frango (Só o Lanche)', 27.00)">R$ 27,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Frango (COM FRITAS)', 32.00)">R$ 32,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Frango (Só o Lanche)', 27.00)">R$ 27,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Frango (COM FRITAS)', 32.00)">R$ 32,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -157,8 +156,8 @@
                 <h3>Burguer Costela</h3>
                 <p>Pão brioche, hambúrguer de costela 150g, queijo cheddar, cebola frita, cebolinha picada, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Costela (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Costela (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Costela (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Costela (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -169,8 +168,8 @@
                 <h3>Burguer Doritos</h3>
                 <p>Pão brioche, 1 hambúrguer artesanal 150g, queijo cheddar, bacon, cebola, doritos, catchup.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Doritos (Só o Lanche)', 32.00)">R$ 32,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Doritos (COM FRITAS)', 37.00)">R$ 37,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Doritos (Só o Lanche)', 32.00)">R$ 32,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Doritos (COM FRITAS)', 37.00)">R$ 37,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -181,8 +180,8 @@
                 <h3>Burguer Egg</h3>
                 <p>Pão brioche com gergelim, hambúrguer artesanal 150g, queijo cheddar, alface, tomate, ovo, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Egg (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Egg (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Egg (Só o Lanche)', 30.00)">R$ 30,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Egg (COM FRITAS)', 35.00)">R$ 35,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -193,8 +192,8 @@
                 <h3>Burguer Silva Burguer</h3>
                 <p>Pão brioche, 2 hambúrguer artesanal 150g, queijo cheddar, bacon, cebola, alface, tomate, picles, ovo, onion rings, maionese da casa.</p>
                 <div class="price-actions">
-                    <button class="btn-add" onclick="addToCart('Burguer Silva Burguer (Só o Lanche)', 40.00)">R$ 40,00<br><small>Só o Lanche</small></button>
-                    <button class="btn-add combo" onclick="addToCart('Burguer Silva Burguer (COM FRITAS)', 45.00)">R$ 45,00<br><small>Com Fritas</small></button>
+                    <button class="btn-add" onclick="openAddonModal('Burguer Silva Burguer (Só o Lanche)', 40.00)">R$ 40,00<br><small>Só o Lanche</small></button>
+                    <button class="btn-add combo" onclick="openAddonModal('Burguer Silva Burguer (COM FRITAS)', 45.00)">R$ 45,00<br><small>Com Fritas</small></button>
                 </div>
             </div>
         </div>
@@ -223,125 +222,6 @@
                 <p>250g de batata, 1 pote de catchup, 1 pote de molho cheddar</p>
                 <span class="price">R$ 27,00</span>
                 <button class="btn-add-single" onclick="addToCart('Porção: Batata Rústica Ondulada', 27.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="category-divider" data-category="adicionais">
-            <div class="divider-content">
-                <h2>ADICIONAIS</h2>
-                <hr>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Hambúrguer Artesanal 100g</h3>
-                <span class="price">R$ 6,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Hambúrguer Artesanal 100g', 6.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Hambúrguer Artesanal 150g</h3>
-                <span class="price">R$ 8,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Hambúrguer Artesanal 150g', 8.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Hambúrguer de Picanha 150g</h3>
-                <span class="price">R$ 20,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Hambúrguer de Picanha 150g', 20.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Hambúrguer de Costela 150g</h3>
-                <span class="price">R$ 10,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Hambúrguer de Costela 150g', 10.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Hambúrguer de Frango 150g</h3>
-                <span class="price">R$ 8,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Hambúrguer de Frango 150g', 8.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Queijo Cheddar</h3>
-                <span class="price">R$ 5,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Queijo Cheddar', 5.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Queijo Prato</h3>
-                <span class="price">R$ 4,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Queijo Prato', 4.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Salada</h3>
-                <span class="price">R$ 3,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Salada', 3.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Bacon</h3>
-                <span class="price">R$ 6,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Bacon', 6.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Ovo</h3>
-                <span class="price">R$ 2,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Ovo', 2.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Anel de Cebola</h3>
-                <span class="price">R$ 4,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Anel de Cebola', 4.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Cebola Caramelizada</h3>
-                <span class="price">R$ 3,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Cebola Caramelizada', 3.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Catupiry Empanado</h3>
-                <span class="price">R$ 15,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Catupiry Empanado', 15.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="adicionais">
-            <div class="item-details">
-                <h3>Picles</h3>
-                <span class="price">R$ 1,00</span>
-                <button class="btn-add-single" onclick="addToCart('Adicional: Picles', 1.00)">+ Adicionar</button>
             </div>
         </div>
 
@@ -458,6 +338,79 @@
             </div>
 
             <button class="btn-confirm" onclick="sendWhatsApp()">Confirmar e Enviar</button>
+        </div>
+    </div>
+
+    <div id="addon-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAddonModal()">&times;</span>
+            <h2>Turbine seu lanche!</h2>
+            <h3 id="modal-burger-name" style="color: var(--primary-color); margin-bottom: 15px;">Nome do Lanche</h3>
+            
+            <p style="margin-bottom: 12px; font-weight: 600; color: var(--text-muted); font-size: 0.95rem;">Escolha seus adicionais:</p>
+            
+            <div class="addons-list">
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="6.00" data-name="Hambúrguer 100g" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Hambúrguer 100g</span><span class="addon-price">+ R$ 6,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="8.00" data-name="Hambúrguer 150g" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Hambúrguer 150g</span><span class="addon-price">+ R$ 8,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="20.00" data-name="Hambúrguer Picanha" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Hambúrguer Picanha</span><span class="addon-price">+ R$ 20,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="10.00" data-name="Hambúrguer Costela" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Hambúrguer Costela</span><span class="addon-price">+ R$ 10,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="8.00" data-name="Hambúrguer Frango" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Hambúrguer Frango</span><span class="addon-price">+ R$ 8,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="5.00" data-name="Cheddar" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Queijo Cheddar</span><span class="addon-price">+ R$ 5,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="4.00" data-name="Queijo Prato" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Queijo Prato</span><span class="addon-price">+ R$ 4,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="3.00" data-name="Salada" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Salada</span><span class="addon-price">+ R$ 3,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="6.00" data-name="Bacon" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Bacon</span><span class="addon-price">+ R$ 6,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="2.00" data-name="Ovo" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Ovo</span><span class="addon-price">+ R$ 2,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="4.00" data-name="Anel de Cebola" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Anel de Cebola</span><span class="addon-price">+ R$ 4,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="3.00" data-name="Cebola Caramelizada" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Cebola Caramelizada</span><span class="addon-price">+ R$ 3,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="15.00" data-name="Catupiry Empanado" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Catupiry Empanado</span><span class="addon-price">+ R$ 15,00</span></div>
+                </label>
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="1.00" data-name="Picles" onchange="updateModalPrice()"> 
+                    <div class="addon-details"><span class="addon-name">Picles</span><span class="addon-price">+ R$ 1,00</span></div>
+                </label>
+            </div>
+
+            <button class="btn-confirm" onclick="confirmBurgerWithAddons()" style="margin-top: 20px;">
+                Adicionar ao Carrinho - R$ <span id="modal-total-price">0,00</span>
+            </button>
         </div>
     </div>
 
