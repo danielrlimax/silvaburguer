@@ -306,3 +306,32 @@ body {
     .menu-container { grid-template-columns: repeat(3, 1fr); gap: 25px; }
     .cart-footer { padding: 20px 15%; }
 }
+
+/* ================= CSS EXCLUSIVO: AJUSTE DE FRAMING DE IMAGENS ================= */
+.menu-item .item-image {
+    width: 100%;             /* Preenche a largura do container */
+    height: 200px;           /* Defina uma altura fixa para o frame. Ajuste conforme necessário. */
+    object-fit: cover;       /* Preenche o frame sem distorção, mantendo a proporção */
+    object-position: center center; /* Posicionamento padrão (centro/centro) */
+    border-radius: 12px 12px 0 0; 
+}
+
+.menu-item img[alt="Burguer Picanha"]{
+    object-position: center 70%;
+}
+
+.menu-item img[alt="Burguer Salada"]{
+    object-position: center 60%;
+}
+
+.menu-item img[alt="Burguer Duplo Especial"]{
+    object-position: center 70%;
+}
+
+.menu-item img[alt="Burguer Bacon"]{
+    object-position: center 60%;
+}
+
+.menu-item img[alt="Burguer Doritos"]{
+    object-position: center 90%;
+}
