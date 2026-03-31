@@ -174,6 +174,52 @@ function updateCartUI() {
 }
 
 // ==========================================
+// RENDERIZAÇÃO E REMOÇÃO DE ITENS
+// ==========================================
+function renderCartItems() {
+    const listContainer = document.getElementById('cart-items-list');
+    listContainer.innerHTML = ""; // Limpa a lista antes de renderizar
+
+    if (cart.length === 0) {
+        listContainer.innerHTML = "<p style='color: var(--text-muted); padding: 10px;'>Carrinho vazio</p>";
+        return;
+    }
+
+    cart.forEach((item, index) => {
+        const itemElement = document.createElement("div");
+        itemElement.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #222;";
+        
+        // Formatação dos adicionais para exibição na lista
+        const addonsText = item.addons && item.addons.length > 0 
+            ? `<br><small style="color: var(--text-muted)">+ ${item.addons.map(a => a.name).join(', ')}</small>` 
+            : "";
+
+        itemElement.innerHTML = `
+            <div style="flex: 1;">
+                <span style="font-weight: 600;">${item.quantity}x ${item.name}</span>
+                ${addonsText}
+                <div style="color: var(--primary-color); font-size: 0.9rem;">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</div>
+            </div>
+            <button onclick="removeFromCart(${index})" style="background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
+                Remover
+            </button>
+        `;
+        listContainer.appendChild(itemElement);
+    });
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1); // Remove o item do array
+    saveCart();            // Atualiza o localStorage
+    updateCartUI();        // Atualiza o total no rodapé
+    renderCartItems();     // Atualiza a lista visual no modal
+
+    if (cart.length === 0) {
+        closeModal(); // Fecha o modal se o último item for removido
+    }
+}
+
+// ==========================================
 // MODAL DE CHECKOUT & WHATSAPP
 // ==========================================
 function openModal() {
@@ -181,6 +227,7 @@ function openModal() {
         alert("Seu carrinho está vazio! Adicione uma delícia antes de pedir.");
         return;
     }
+    renderCartItems(); // Renderiza a lista de itens ao abrir o modal
     document.getElementById('checkout-modal').style.display = 'flex';
 }
 

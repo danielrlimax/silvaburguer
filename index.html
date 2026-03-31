@@ -321,7 +321,10 @@
     <div id="checkout-modal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2>Finalizar Pedido</h2>
+            <h2>Seu Pedido</h2>
+
+            <div id="cart-items-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px solid #333;">
+                </div>
 
             <label for="user-address">Endereço de Entrega:</label>
             <textarea id="user-address" placeholder="Rua, Número, Bairro, Complemento" rows="3"></textarea>

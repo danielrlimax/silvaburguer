@@ -570,3 +570,32 @@ body {
 .menu-item img[alt="Burguer Doritos"]{
     object-position: center 90%;
 }
+
+/* ================= BARRA DE ROLAGEM CUSTOMIZADA ================= */
+
+/* Suporte para Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #333333 var(--bg-color);
+}
+
+/* Largura da barra (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Fundo da barra (Track) */
+::-webkit-scrollbar-track {
+    background: var(--bg-color); /* Puxa o fundo preto do site */
+}
+
+/* O "puxador" da barra (Thumb) */
+::-webkit-scrollbar-thumb {
+    background: #333333; /* Cinza escuro elegante */
+    border-radius: 10px; /* Deixa as pontas arredondadas */
+}
+
+/* O "puxador" quando o mouse passa por cima (Hover) */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color); /* Fica amarelo (da sua logo) no hover */
+}
