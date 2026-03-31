@@ -2,13 +2,14 @@ const whatsappNumber = "5519997103303";
 let cart = [];
 
 // ==========================================
-// FILTRO DE CATEGORIAS
+// FILTRO DE CATEGORIAS (Corrigido para ficar amarelo)
 // ==========================================
 function filterMenu(category) {
     const buttons = document.querySelectorAll('.cat-btn');
     buttons.forEach(btn => {
         btn.classList.remove('active');
-        if(btn.innerText.toLowerCase() === category.toLowerCase() || (category === 'todos' && btn.innerText === 'Todos')) {
+        // Agora ele verifica se a ação do botão contém a categoria exata clicada
+        if(btn.getAttribute('onclick').includes(`'${category}'`)) {
             btn.classList.add('active');
         }
     });
@@ -171,7 +172,7 @@ function sendWhatsApp() {
     const troco = document.getElementById('troco').value;
 
     if (address.trim() === '') {
-        alert("Por favor, digite a sua morada (endereço) para entrega.");
+        alert("Por favor, digite o seu endereço para entrega.");
         return;
     }
 
@@ -182,10 +183,10 @@ function sendWhatsApp() {
         const itemTotal = item.price * item.quantity;
         message += `• ${item.quantity}x - ${item.name} - R$ ${itemTotal.toFixed(2).replace('.', ',')}\n`;
         
-        // Adiciona a lista de ingredientes extra logo abaixo do lanche
+        // CORREÇÃO: Formatação dos adicionais com espaçamento e itálico limpo
         if (item.addons && item.addons.length > 0) {
             const addonNames = item.addons.map(a => a.name).join(', ');
-            message += `   _+ ${addonNames}_\n`;
+            message += `    + _${addonNames}_\n`;
         }
     });
 
