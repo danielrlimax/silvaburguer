@@ -4,10 +4,10 @@ let cart = [];
 // ==========================================
 // LÓGICA DE ARMAZENAMENTO (LOCALSTORAGE)
 // ==========================================
-// NOVO: Tempo de expiração em milissegundos (1 hora = 3600000 ms)
+//Tempo de expiração em milissegundos (1 hora = 3600000 ms)
 const CART_EXPIRATION_MS = 60 * 60 * 1000; 
 
-// NOVO: Função para salvar o carrinho atual no navegador
+//Função para salvar o carrinho atual no navegador
 function saveCart() {
     const cartData = {
         items: cart,
@@ -16,30 +16,30 @@ function saveCart() {
     localStorage.setItem('silvaBurguerCart', JSON.stringify(cartData));
 }
 
-// NOVO: Função para carregar o carrinho quando a página abrir
+//Função para carregar o carrinho quando a página abrir
 function loadCart() {
     const savedCartData = localStorage.getItem('silvaBurguerCart');
     if (savedCartData) {
         const parsedData = JSON.parse(savedCartData);
         const currentTime = new Date().getTime();
         
-        // Verifica se a diferença de tempo é menor que 1 hora
+        //Verifica se a diferença de tempo é menor que 1 hora
         if (currentTime - parsedData.timestamp < CART_EXPIRATION_MS) {
             cart = parsedData.items;
-            updateCartUI(); // Atualiza os contadores na tela
+            updateCartUI(); //Atualiza os contadores na tela
         } else {
-            // Se passou de 1 hora, limpa o lixo antigo
+            //Se passou de 1 hora, limpa o lixo antigo
             localStorage.removeItem('silvaBurguerCart');
         }
     }
 }
 
-// NOVO: Executa o carregamento assim que o script é lido
+//Executa o carregamento assim que o script é lido
 loadCart();
 
 
 // ==========================================
-// FILTRO DE CATEGORIAS (Corrigido para ficar amarelo)
+// FILTRO DE CATEGORIAS
 // ==========================================
 function filterMenu(category) {
     const buttons = document.querySelectorAll('.cat-btn');
@@ -127,7 +127,7 @@ function confirmBurgerWithAddons() {
         });
     }
 
-    saveCart(); // NOVO: Salva no localStorage após adicionar lanche com adicional
+    saveCart(); //Salva no localStorage após adicionar lanche com adicional
     updateCartUI();
     closeAddonModal();
     alert(currentBurger.name + " adicionado ao carrinho!");
@@ -146,7 +146,7 @@ function addToCart(name, price) {
         cart.push({ key: itemKey, name, price, quantity: 1, addons: [] });
     }
     
-    saveCart(); // NOVO: Salva no localStorage após adicionar bebida/porção
+    saveCart(); //Salva no localStorage após adicionar bebida/porção
     updateCartUI();
     
     const btn = event.currentTarget;
@@ -240,7 +240,7 @@ function sendWhatsApp() {
     window.open(whatsappUrl, '_blank');
     closeModal();
 
-    // NOVO: Reseta o carrinho após enviar o pedido!
+    //Reseta o carrinho após enviar o pedido!
     cart = [];
     localStorage.removeItem('silvaBurguerCart');
     updateCartUI();
