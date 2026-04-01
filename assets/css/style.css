@@ -571,6 +571,10 @@ body {
     object-position: center 90%;
 }
 
+.menu-item img[alt="Burguer Frango"]{
+    object-position: center 45%;
+}
+
 /* ================= BARRA DE ROLAGEM CUSTOMIZADA ================= */
 
 /* Suporte para Firefox */
