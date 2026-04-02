@@ -79,7 +79,11 @@ let currentBurger = null;
 function openAddonModal(name, price) {
     currentBurger = { name: name, basePrice: price, currentPrice: price };
     
-    document.querySelectorAll('.addon-checkbox').forEach(cb => cb.checked = false);
+    // Limpa caixas de seleção
+    document.querySelectorAll('.addon-checkbox[type="checkbox"]').forEach(cb => cb.checked = false);
+    
+    // Limpa o campo de observações ao abrir
+    document.getElementById('burger-notes').value = '';
     
     document.getElementById('modal-burger-name').innerText = name;
     updateModalPrice();
@@ -94,7 +98,7 @@ function closeAddonModal() {
 
 function updateModalPrice() {
     let total = currentBurger.basePrice;
-    document.querySelectorAll('.addon-checkbox:checked').forEach(cb => {
+    document.querySelectorAll('#addon-modal .addon-checkbox:checked').forEach(cb => {
         total += parseFloat(cb.value);
     });
     currentBurger.currentPrice = total;
@@ -103,15 +107,17 @@ function updateModalPrice() {
 
 function confirmBurgerWithAddons() {
     let selectedAddons = [];
-    document.querySelectorAll('.addon-checkbox:checked').forEach(cb => {
+    document.querySelectorAll('#addon-modal .addon-checkbox:checked').forEach(cb => {
         selectedAddons.push({
             name: cb.getAttribute('data-name'),
             price: parseFloat(cb.value)
         });
     });
 
+    const notes = document.getElementById('burger-notes').value.trim();
     const addonsString = selectedAddons.map(a => a.name).sort().join('|');
-    const itemKey = `${currentBurger.name}-${addonsString}`;
+    
+    const itemKey = `${currentBurger.name}-${addonsString}-${notes}`;
 
     const existingItem = cart.find(item => item.key === itemKey);
 
@@ -123,20 +129,68 @@ function confirmBurgerWithAddons() {
             name: currentBurger.name,
             price: currentBurger.currentPrice, 
             quantity: 1,
-            addons: selectedAddons
+            addons: selectedAddons,
+            notes: notes 
         });
     }
 
-    saveCart(); //Salva no localStorage após adicionar lanche com adicional
+    saveCart(); 
     updateCartUI();
     closeAddonModal();
     alert(currentBurger.name + " adicionado ao carrinho!");
 }
 
 // ==========================================
-// CARRINHO (PARA BEBIDAS E PORÇÕES)
+// LÓGICA DE VARIAÇÕES DE BEBIDAS
 // ==========================================
-function addToCart(name, price) {
+let currentDrink = null;
+
+function openDrinkModal(baseName, price, options) {
+    currentDrink = { name: baseName, price: price };
+    
+    document.getElementById('modal-drink-name').innerText = baseName;
+    document.getElementById('modal-drink-price').innerText = price.toFixed(2).replace('.', ',');
+    
+    const optionsContainer = document.getElementById('drink-options-list');
+    optionsContainer.innerHTML = '';
+    
+    options.forEach((opt, index) => {
+        // Deixa a primeira opção marcada por padrão
+        const isChecked = index === 0 ? 'checked' : '';
+        optionsContainer.innerHTML += `
+            <label class="addon-item">
+                <input type="radio" name="drink-variation" class="addon-checkbox" value="${opt}" ${isChecked}> 
+                <div class="addon-details">
+                    <span class="addon-name">${opt}</span>
+                </div>
+            </label>
+        `;
+    });
+    
+    document.getElementById('drink-modal').style.display = 'flex';
+}
+
+function closeDrinkModal() {
+    document.getElementById('drink-modal').style.display = 'none';
+    currentDrink = null;
+}
+
+function confirmDrink() {
+    if (!currentDrink) return;
+    
+    const selectedOption = document.querySelector('input[name="drink-variation"]:checked').value;
+    
+    // Aproveitamos a função padrão de adicionar item único
+    addToCart(selectedOption, currentDrink.price);
+    
+    closeDrinkModal();
+    alert(selectedOption + " adicionada ao carrinho!");
+}
+
+// ==========================================
+// CARRINHO (PARA ITENS SEM MODAL)
+// ==========================================
+function addToCart(name, price, btnElement = null) {
     const itemKey = name;
     const existingItem = cart.find(item => item.key === itemKey);
     
@@ -146,23 +200,27 @@ function addToCart(name, price) {
         cart.push({ key: itemKey, name, price, quantity: 1, addons: [] });
     }
     
-    saveCart(); //Salva no localStorage após adicionar bebida/porção
+    saveCart(); 
     updateCartUI();
     
-    const btn = event.currentTarget;
-    const originalHTML = btn.innerHTML;
-    const originalBg = btn.style.background;
-    const originalColor = btn.style.color;
+    const btn = btnElement || (window.event ? window.event.currentTarget : null);
+    
+    // Animação de sucesso no botão (se o botão existir na página principal)
+    if (btn && btn.classList && btn.classList.contains('btn-add-single')) {
+        const originalHTML = btn.innerHTML;
+        const originalBg = btn.style.background;
+        const originalColor = btn.style.color;
 
-    btn.innerHTML = "Adicionado!";
-    btn.style.background = "#25d366";
-    btn.style.color = "#fff";
+        btn.innerHTML = "Adicionado!";
+        btn.style.background = "#25d366";
+        btn.style.color = "#fff";
 
-    setTimeout(() => {
-        btn.innerHTML = originalHTML;
-        btn.style.background = originalBg;
-        btn.style.color = originalColor;
-    }, 800);
+        setTimeout(() => {
+            btn.innerHTML = originalHTML;
+            btn.style.background = originalBg;
+            btn.style.color = originalColor;
+        }, 800);
+    }
 }
 
 function updateCartUI() {
@@ -178,7 +236,7 @@ function updateCartUI() {
 // ==========================================
 function renderCartItems() {
     const listContainer = document.getElementById('cart-items-list');
-    listContainer.innerHTML = ""; // Limpa a lista antes de renderizar
+    listContainer.innerHTML = ""; 
 
     if (cart.length === 0) {
         listContainer.innerHTML = "<p style='color: var(--text-muted); padding: 10px;'>Carrinho vazio</p>";
@@ -189,15 +247,19 @@ function renderCartItems() {
         const itemElement = document.createElement("div");
         itemElement.style.cssText = "display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #222;";
         
-        // Formatação dos adicionais para exibição na lista
         const addonsText = item.addons && item.addons.length > 0 
             ? `<br><small style="color: var(--text-muted)">+ ${item.addons.map(a => a.name).join(', ')}</small>` 
+            : "";
+            
+        const notesText = item.notes 
+            ? `<br><small style="color: var(--primary-color)">Obs: ${item.notes}</small>` 
             : "";
 
         itemElement.innerHTML = `
             <div style="flex: 1;">
                 <span style="font-weight: 600;">${item.quantity}x ${item.name}</span>
                 ${addonsText}
+                ${notesText}
                 <div style="color: var(--primary-color); font-size: 0.9rem;">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</div>
             </div>
             <button onclick="removeFromCart(${index})" style="background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 0.8rem;">
@@ -209,13 +271,13 @@ function renderCartItems() {
 }
 
 function removeFromCart(index) {
-    cart.splice(index, 1); // Remove o item do array
-    saveCart();            // Atualiza o localStorage
-    updateCartUI();        // Atualiza o total no rodapé
-    renderCartItems();     // Atualiza a lista visual no modal
+    cart.splice(index, 1); 
+    saveCart();            
+    updateCartUI();        
+    renderCartItems();     
 
     if (cart.length === 0) {
-        closeModal(); // Fecha o modal se o último item for removido
+        closeModal(); 
     }
 }
 
@@ -227,7 +289,7 @@ function openModal() {
         alert("Seu carrinho está vazio! Adicione uma delícia antes de pedir.");
         return;
     }
-    renderCartItems(); // Renderiza a lista de itens ao abrir o modal
+    renderCartItems(); 
     document.getElementById('checkout-modal').style.display = 'flex';
 }
 
@@ -267,6 +329,10 @@ function sendWhatsApp() {
             const addonNames = item.addons.map(a => a.name).join(', ');
             message += `    + _${addonNames}_\n`;
         }
+        
+        if (item.notes) {
+            message += `    *Obs:* _${item.notes}_\n`;
+        }
     });
 
     const total = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
@@ -283,11 +349,9 @@ function sendWhatsApp() {
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
 
-    // Abre o WhatsApp
     window.open(whatsappUrl, '_blank');
     closeModal();
 
-    //Reseta o carrinho após enviar o pedido!
     cart = [];
     localStorage.removeItem('silvaBurguerCart');
     updateCartUI();

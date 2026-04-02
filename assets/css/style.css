@@ -131,7 +131,8 @@ body {
 .divider-content hr { 
     flex: 1; 
     border: 0; 
-    border-top: 1px solid #333; }
+    border-top: 1px solid #333; 
+}
 
 /* ============ ITENS DO MENU ============ */
 .menu-item {
@@ -310,7 +311,7 @@ body {
     } 
 }
 
-/* ============ MODAIS (CHECKOUT & ADICIONAIS) ============ */
+/* ============ MODAIS ============ */
 .modal {
     display: none; 
     position: fixed; 
@@ -339,7 +340,6 @@ body {
     max-width: 450px; 
     position: relative; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-    /* Se o modal for muito grande no celular, ele dá scroll interno */
     max-height: 90vh; 
     display: flex;
     flex-direction: column;
@@ -367,7 +367,6 @@ body {
     text-transform: uppercase; 
 }
 
-/* Estilos gerais de inputs do checkout */
 .modal-content label:not(.addon-item) { 
     display: block; 
     margin-bottom: 8px; 
@@ -392,7 +391,6 @@ body {
     border-color: var(--primary-color); 
 }
 
-/* Botoes de confirmar nos Modais */
 .btn-confirm {
     width: 100%; 
     background: var(--whatsapp); 
@@ -415,7 +413,6 @@ body {
     margin-bottom: 15px;
     overflow-y: auto; 
     padding-right: 5px;
-    /* Estilizando a barra de rolagem para ficar bonita */
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) #222;
 }
@@ -434,7 +431,7 @@ body {
     border-radius: 10px; 
 }
 
-/* Card de cada Adicional */
+/* Card de cada Adicional/Opção */
 .addon-item {
     display: flex;
     align-items: center;
@@ -444,10 +441,10 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin: 0; /* Remove margens padrão de labels */
+    margin: 0; 
 }
 
-/* Efeito de selecionar o card */
+/* Efeito de selecionar o card para Checkbox e Radio */
 .addon-item:has(input:checked), .addon-item:active {
     border-color: var(--primary-color);
     background: rgba(247, 202, 24, 0.05);
@@ -506,7 +503,6 @@ body {
 }
 
 @media (min-width: 600px) {
-    /* No computador ou tablet a lista de adicionais fica com 2 colunas */
     .addons-list {
         grid-template-columns: 1fr 1fr;
     }
@@ -544,10 +540,10 @@ body {
 
 /* ================= AJUSTE DE FRAMING DE IMAGENS ================= */
 .menu-item .item-image {
-    width: 100%;             /* Preenche a largura do container */
-    height: 200px;           /* Defina uma altura fixa para o frame. Ajuste conforme necessário. */
-    object-fit: cover;       /* Preenche o frame sem distorção, mantendo a proporção */
-    object-position: center center; /* Posicionamento padrão (centro/centro) */
+    width: 100%;             
+    height: 200px;           
+    object-fit: cover;       
+    object-position: center center; 
     border-radius: 12px 12px 0 0; 
 }
 
@@ -577,29 +573,24 @@ body {
 
 /* ================= BARRA DE ROLAGEM CUSTOMIZADA ================= */
 
-/* Suporte para Firefox */
 * {
     scrollbar-width: thin;
     scrollbar-color: #333333 var(--bg-color);
 }
 
-/* Largura da barra (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
-/* Fundo da barra (Track) */
 ::-webkit-scrollbar-track {
-    background: var(--bg-color); /* Puxa o fundo preto do site */
+    background: var(--bg-color); 
 }
 
-/* O "puxador" da barra (Thumb) */
 ::-webkit-scrollbar-thumb {
-    background: #333333; /* Cinza escuro elegante */
-    border-radius: 10px; /* Deixa as pontas arredondadas */
+    background: #333333; 
+    border-radius: 10px; 
 }
 
-/* O "puxador" quando o mouse passa por cima (Hover) */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary-color); /* Fica amarelo (da sua logo) no hover */
+    background: var(--primary-color); 
 }

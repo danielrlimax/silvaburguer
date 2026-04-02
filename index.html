@@ -214,7 +214,7 @@
                 <h3>Onion Rings</h3>
                 <p>250g de onion rings, 1 pote de barbecue, 1 pote de catchup</p>
                 <span class="price">R$ 27,00</span>
-                <button class="btn-add-single" onclick="addToCart('Porção: Onion Rings', 27.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="addToCart('Porção: Onion Rings', 27.00, this)">+ Adicionar</button>
             </div>
         </div>
 
@@ -224,7 +224,7 @@
                 <h3>Batata Rústica Ondulada</h3>
                 <p>250g de batata, 1 pote de catchup, 1 pote de molho cheddar</p>
                 <span class="price">R$ 27,00</span>
-                <button class="btn-add-single" onclick="addToCart('Porção: Batata Rústica Ondulada', 27.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="addToCart('Porção: Batata Rústica Ondulada', 27.00, this)">+ Adicionar</button>
             </div>
         </div>
 
@@ -239,8 +239,29 @@
             <img src="assets/img/bebidas/coca_cola_lata.webp" alt="Coca-Cola Lata" class="item-image">
             <div class="item-details">
                 <h3>Coca-Cola Lata</h3>
+                <p>Escolha entre Tradicional e Zero</p>
                 <span class="price">R$ 5,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Coca-Cola Lata', 5.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="openDrinkModal('Coca-Cola Lata', 5.00, ['Bebida: Coca-Cola Lata', 'Bebida: Coca-Cola Zero Lata'])">+ Adicionar</button>
+            </div>
+        </div>
+
+        <div class="menu-item single-price" data-category="bebidas">
+            <img src="assets/img/bebidas/coca_cola_600.webp" alt="Coca-Cola 600ml" class="item-image">
+            <div class="item-details">
+                <h3>Coca-Cola 600 ml</h3>
+                <p>Escolha entre Tradicional e Zero</p>
+                <span class="price">R$ 7,00</span>
+                <button class="btn-add-single" onclick="openDrinkModal('Coca-Cola 600 ml', 7.00, ['Bebida: Coca-Cola 600ml', 'Bebida: Coca-Cola Zero 600ml'])">+ Adicionar</button>
+            </div>
+        </div>
+
+        <div class="menu-item single-price" data-category="bebidas">
+            <img src="assets/img/bebidas/coca_cola2l.webp" alt="Coca-Cola 2L" class="item-image">
+            <div class="item-details">
+                <h3>Coca-Cola 2L</h3>
+                <p>Escolha entre Tradicional e Zero</p>
+                <span class="price">R$ 13,00</span>
+                <button class="btn-add-single" onclick="openDrinkModal('Coca-Cola 2L', 13.00, ['Bebida: Coca-Cola 2L', 'Bebida: Coca-Cola Zero 2L'])">+ Adicionar</button>
             </div>
         </div>
 
@@ -249,7 +270,7 @@
             <div class="item-details">
                 <h3>Fanta Lata</h3>
                 <span class="price">R$ 5,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Fanta Lata', 5.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="addToCart('Bebida: Fanta Lata', 5.00, this)">+ Adicionar</button>
             </div>
         </div>
 
@@ -258,7 +279,7 @@
             <div class="item-details">
                 <h3>Sprite Lata</h3>
                 <span class="price">R$ 5,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Sprite Lata', 5.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="addToCart('Bebida: Sprite Lata', 5.00, this)">+ Adicionar</button>
             </div>
         </div>
 
@@ -267,16 +288,7 @@
             <div class="item-details">
                 <h3>Guaraná Lata</h3>
                 <span class="price">R$ 5,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Guaraná Lata', 5.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="bebidas">
-            <img src="assets/img/bebidas/coca_cola_600.webp" alt="Coca-Cola 600ml" class="item-image">
-            <div class="item-details">
-                <h3>Coca-Cola 600 ml</h3>
-                <span class="price">R$ 7,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Coca-Cola 600 ml', 7.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="addToCart('Bebida: Guaraná Lata', 5.00, this)">+ Adicionar</button>
             </div>
         </div>
 
@@ -285,7 +297,7 @@
             <div class="item-details">
                 <h3>Água Com Gás</h3>
                 <span class="price">R$ 5,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Água Com Gás', 5.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="addToCart('Bebida: Água Com Gás', 5.00, this)">+ Adicionar</button>
             </div>
         </div>
 
@@ -294,16 +306,7 @@
             <div class="item-details">
                 <h3>Água Sem Gás</h3>
                 <span class="price">R$ 3,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Água Sem Gás', 3.00)">+ Adicionar</button>
-            </div>
-        </div>
-
-        <div class="menu-item single-price" data-category="bebidas">
-            <img src="assets/img/bebidas/coca_cola2l.webp" alt="Coca-Cola 2L" class="item-image">
-            <div class="item-details">
-                <h3>Coca-Cola 2L</h3>
-                <span class="price">R$ 13,00</span>
-                <button class="btn-add-single" onclick="addToCart('Bebida: Coca-Cola 2L', 12.00)">+ Adicionar</button>
+                <button class="btn-add-single" onclick="addToCart('Bebida: Água Sem Gás', 3.00, this)">+ Adicionar</button>
             </div>
         </div>
 
@@ -325,7 +328,7 @@
             <h2>Seu Pedido</h2>
 
             <div id="cart-items-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 20px; border-bottom: 1px solid #333;">
-                </div>
+            </div>
 
             <label for="user-address">Endereço de Entrega:</label>
             <textarea id="user-address" placeholder="Rua, Número, Bairro, Complemento" rows="3"></textarea>
@@ -414,8 +417,28 @@
                 </label>
             </div>
 
-            <button class="btn-confirm" onclick="confirmBurgerWithAddons()" style="margin-top: 20px;">
+            <div style="margin-bottom: 15px;">
+                <label for="burger-notes">Observações do Lanche:</label>
+                <textarea id="burger-notes" placeholder="Ex: Sem cebola, carne ao ponto... (opcional)" rows="2"></textarea>
+            </div>
+
+            <button class="btn-confirm" onclick="confirmBurgerWithAddons()" style="margin-top: 5px;">
                 Adicionar ao Carrinho - R$ <span id="modal-total-price">0,00</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="drink-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeDrinkModal()">&times;</span>
+            <h2>Escolha a Opção</h2>
+            <h3 id="modal-drink-name" style="color: var(--primary-color); margin-bottom: 15px;">Nome da Bebida</h3>
+
+            <div class="addons-list" id="drink-options-list">
+                </div>
+
+            <button class="btn-confirm" onclick="confirmDrink()" style="margin-top: 15px;">
+                Adicionar ao Carrinho - R$ <span id="modal-drink-price">0,00</span>
             </button>
         </div>
     </div>
