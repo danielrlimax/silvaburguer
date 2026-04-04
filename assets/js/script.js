@@ -4,42 +4,181 @@ let cart = [];
 // ==========================================
 // LÓGICA DE ARMAZENAMENTO (LOCALSTORAGE)
 // ==========================================
-//Tempo de expiração em milissegundos (1 hora = 3600000 ms)
 const CART_EXPIRATION_MS = 60 * 60 * 1000; 
 
-//Função para salvar o carrinho atual no navegador
 function saveCart() {
-    const cartData = {
-        items: cart,
-        timestamp: new Date().getTime()
-    };
+    const cartData = { items: cart, timestamp: new Date().getTime() };
     localStorage.setItem('silvaBurguerCart', JSON.stringify(cartData));
 }
 
-//Função para carregar o carrinho quando a página abrir
 function loadCart() {
     const savedCartData = localStorage.getItem('silvaBurguerCart');
     if (savedCartData) {
         const parsedData = JSON.parse(savedCartData);
         const currentTime = new Date().getTime();
         
-        //Verifica se a diferença de tempo é menor que 1 hora
         if (currentTime - parsedData.timestamp < CART_EXPIRATION_MS) {
             cart = parsedData.items;
-            updateCartUI(); //Atualiza os contadores na tela
         } else {
-            //Se passou de 1 hora, limpa o lixo antigo
             localStorage.removeItem('silvaBurguerCart');
         }
     }
 }
 
-//Executa o carregamento assim que o script é lido
-loadCart();
+// ==========================================
+// INTEGRAÇÃO GOOGLE SHEETS
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    loadCart();
+    loadMenuFromCSV();
+});
 
+async function loadMenuFromCSV() {
+    try {
+        const planilhalink = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQ44nTwWdvXf_nfAwXQmTUi43sMnusZOsGbipkChc1vg5f4WfdkvWgqrwLxDIkLKvG3Sc2Jrnrkl9MS/pub?gid=45705687&single=true&output=csv'; 
+        
+        const response = await fetch(planilhalink);
+        if (!response.ok) throw new Error('Falha na planilha');
+        
+        const csvText = await response.text();
+        renderSystem(csvText);
+        updateCartUI(); // Atualiza contador após o sistema carregar
+    } catch (error) {
+        console.error("Erro:", error);
+        document.getElementById('menu-container').innerHTML = 
+            `<p style="color:var(--primary-color); text-align: center; width: 100%; grid-column: 1 / -1; margin-top: 50px;">Erro ao carregar o cardápio. Verifique sua conexão.</p>`;
+    }
+}
+
+function parseCSVLine(line) {
+    let result = [];
+    let current = '';
+    let inQuotes = false;
+    
+    for (let i = 0; i < line.length; i++) {
+        let char = line[i];
+        if (char === '"') {
+            inQuotes = !inQuotes; 
+        } else if (char === ',' && !inQuotes) {
+            result.push(current);
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    result.push(current);
+    return result.map(col => col.trim());
+}
+
+function renderSystem(csvText) {
+    const container = document.getElementById('menu-container');
+    const addonsContainer = document.getElementById('modal-addons-list');
+    
+    container.innerHTML = '';
+    addonsContainer.innerHTML = '';
+
+    const lines = csvText.split('\n').filter(line => line.trim() !== '');
+    const dataRows = lines.slice(1); 
+
+    const renderedCategories = new Set();
+    const categoryTitles = {
+        'burgers': 'LANCHES',
+        'porcoes': 'PORÇÕES',
+        'bebidas': 'BEBIDAS'
+    };
+
+    dataRows.forEach(row => {
+        const cols = parseCSVLine(row); 
+        if (cols.length < 6) return;
+
+        const categoria = cols[0];
+        const nome = cols[1];
+        const descricao = cols[2];
+        const imagem = cols[3];
+        const tipoAcao = cols[4];
+        const preco1 = parseFloat(cols[5]);
+        const preco2 = cols[6] ? parseFloat(cols[6]) : 0;
+        const variacoesStr = cols[7] ? cols[7] : '';
+
+        // Injeta os Adicionais no Modal
+        if (categoria === 'adicionais' && tipoAcao === 'Adicional') {
+            addonsContainer.innerHTML += `
+                <label class="addon-item">
+                    <input type="checkbox" class="addon-checkbox" value="${preco1}" data-name="${nome}" onchange="updateModalPrice()"> 
+                    <div class="addon-details">
+                        <span class="addon-name">${nome}</span>
+                        <span class="addon-price">+ R$ ${preco1.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                </label>
+            `;
+            return; 
+        }
+
+        // Cria as Divisórias Dinâmicas
+        if (!renderedCategories.has(categoria)) {
+            renderedCategories.add(categoria);
+            const title = categoryTitles[categoria] || categoria.toUpperCase();
+            
+            container.innerHTML += `
+                <div class="category-divider" data-category="${categoria}">
+                    <div class="divider-content">
+                        <h2>${title}</h2>
+                        <hr>
+                    </div>
+                </div>
+            `;
+        }
+
+        let itemHTML = '';
+
+        if (tipoAcao === 'Lanche_Combo') {
+            itemHTML = `
+                <div class="menu-item" data-category="${categoria}">
+                    <img src="${imagem}" alt="${nome}" class="item-image">
+                    <div class="item-details">
+                        <h3>${nome}</h3>
+                        <p>${descricao}</p>
+                        <div class="price-actions">
+                            <button class="btn-add" onclick="openAddonModal('${nome} (Só o Lanche)', ${preco1})">R$ ${preco1.toFixed(2).replace('.', ',')}<br><small>Só o Lanche</small></button>
+                            <button class="btn-add combo" onclick="openAddonModal('${nome} (COM FRITAS)', ${preco2})">R$ ${preco2.toFixed(2).replace('.', ',')}<br><small>Com Fritas</small></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } 
+        else if (tipoAcao === 'Direto') {
+            itemHTML = `
+                <div class="menu-item single-price" data-category="${categoria}">
+                    <img src="${imagem}" alt="${nome}" class="item-image">
+                    <div class="item-details">
+                        <h3>${nome}</h3>
+                        <p>${descricao}</p>
+                        <span class="price">R$ ${preco1.toFixed(2).replace('.', ',')}</span>
+                        <button class="btn-add-single" onclick="addToCart('${categoria === 'bebidas' ? 'Bebida: ' : 'Porção: '}${nome}', ${preco1}, this)">+ Adicionar</button>
+                    </div>
+                </div>
+            `;
+        } 
+        else if (tipoAcao === 'Modal_Bebida') {
+            const variacoesArray = variacoesStr.split('|').map(v => `'${v.trim()}'`); 
+            itemHTML = `
+                <div class="menu-item single-price" data-category="${categoria}">
+                    <img src="${imagem}" alt="${nome}" class="item-image">
+                    <div class="item-details">
+                        <h3>${nome}</h3>
+                        <p>${descricao}</p>
+                        <span class="price">R$ ${preco1.toFixed(2).replace('.', ',')}</span>
+                        <button class="btn-add-single" onclick="openDrinkModal('${nome}', ${preco1}, [${variacoesArray}])">+ Adicionar</button>
+                    </div>
+                </div>
+            `;
+        }
+        container.innerHTML += itemHTML;
+    });
+}
 
 // ==========================================
-// FILTRO DE CATEGORIAS
+// FILTRO DE CATEGORIAS RESTAURADO
 // ==========================================
 function filterMenu(category) {
     const buttons = document.querySelectorAll('.cat-btn');
@@ -79,10 +218,7 @@ let currentBurger = null;
 function openAddonModal(name, price) {
     currentBurger = { name: name, basePrice: price, currentPrice: price };
     
-    // Limpa caixas de seleção
     document.querySelectorAll('.addon-checkbox[type="checkbox"]').forEach(cb => cb.checked = false);
-    
-    // Limpa o campo de observações ao abrir
     document.getElementById('burger-notes').value = '';
     
     document.getElementById('modal-burger-name').innerText = name;
@@ -155,7 +291,6 @@ function openDrinkModal(baseName, price, options) {
     optionsContainer.innerHTML = '';
     
     options.forEach((opt, index) => {
-        // Deixa a primeira opção marcada por padrão
         const isChecked = index === 0 ? 'checked' : '';
         optionsContainer.innerHTML += `
             <label class="addon-item">
@@ -179,8 +314,6 @@ function confirmDrink() {
     if (!currentDrink) return;
     
     const selectedOption = document.querySelector('input[name="drink-variation"]:checked').value;
-    
-    // Aproveitamos a função padrão de adicionar item único
     addToCart(selectedOption, currentDrink.price);
     
     closeDrinkModal();
@@ -205,7 +338,6 @@ function addToCart(name, price, btnElement = null) {
     
     const btn = btnElement || (window.event ? window.event.currentTarget : null);
     
-    // Animação de sucesso no botão (se o botão existir na página principal)
     if (btn && btn.classList && btn.classList.contains('btn-add-single')) {
         const originalHTML = btn.innerHTML;
         const originalBg = btn.style.background;
@@ -228,11 +360,16 @@ function updateCartUI() {
     const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
 
     document.getElementById('cart-total').innerText = `R$ ${total.toFixed(2).replace('.', ',')}`;
-    document.getElementById('cart-count').innerText = `${totalItems} item(ns)`;
+    
+    if(totalItems === 0) {
+        document.getElementById('cart-count').innerText = `Nenhum item`;
+    } else {
+        document.getElementById('cart-count').innerText = `${totalItems} item(ns)`;
+    }
 }
 
 // ==========================================
-// RENDERIZAÇÃO E REMOÇÃO DE ITENS
+// RENDERIZAÇÃO E REMOÇÃO DE ITENS (CHECKOUT MODAL)
 // ==========================================
 function renderCartItems() {
     const listContainer = document.getElementById('cart-items-list');

@@ -291,7 +291,7 @@ body {
     font-size: 0.9rem; 
 }
 
-.btn-order {
+.btn-order, .btn-view-cart {
     background: var(--whatsapp); 
     color: white; 
     border: none; 
@@ -305,7 +305,7 @@ body {
 }
 
 @media (hover: hover) { 
-    .btn-order:hover { 
+    .btn-order:hover, .btn-view-cart:hover { 
         background: #20b858; 
         transform: translateY(-2px); 
     } 
@@ -492,7 +492,7 @@ body {
         padding: 12px 15px; 
     }
 
-    .btn-order { 
+    .btn-order, .btn-view-cart { 
         padding: 12px 15px; 
         font-size: 0.95rem; 
     }
@@ -572,7 +572,6 @@ body {
 }
 
 /* ================= BARRA DE ROLAGEM CUSTOMIZADA ================= */
-
 * {
     scrollbar-width: thin;
     scrollbar-color: #333333 var(--bg-color);
